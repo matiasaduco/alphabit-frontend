@@ -12,7 +12,9 @@ const Chat = () => {
   const senderClass = 'bg-blue-600 text-white self-end mr-2'
   const receiverClass = 'bg-blue-800 ml-2'
 
-  return (
+  return chat ? (
+    <img src='#BackgroundEmptyChat' className='w-[100%]' />
+  ) : (
     <div className='grow flex flex-col justify-end items-start'>
       <span className={`${base} ${true ? senderClass : receiverClass}`}>
         Hola!

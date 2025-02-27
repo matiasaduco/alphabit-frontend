@@ -14,17 +14,17 @@ const Chats = () => {
       <div className='flex flex-col gap-2 sticky top-0 p-4'>
         <span className='flex mb-4'>
           <h3 className='text-3xl'>Chats</h3>
-          <img src='#New Chat Icon' className='ml-auto' />
-          <img src='#Options' />
+          {/* <img src='#New Chat' className='ml-auto' /> */}
+          {/* <img src='#Options' /> */}
         </span>
 
         <input type='text' placeholder='Search' />
 
         <span className='flex mb-1'>
-          <img src='#Todos' />
-          <img src='#No Leídos' />
-          <img src='#Favoritos' />
-          <img src='#Grupos' />
+          {/* <img src='#Todos' /> */}
+          {/* <img src='#No Leídos' /> */}
+          {/* <img src='#Favoritos' /> */}
+          {/* <img src='#Grupos' /> */}
         </span>
       </div>
 
@@ -43,7 +43,7 @@ const Chats = () => {
             <p className='text-gray-400'>{chat.lastMessage}</p>
           </span>
           {/* Date */}
-          {/* <img src='#mute-icon' className='absolute right-0' /> */}
+          {/* <img src='#Mute' className='absolute right-0' /> */}
           {/* Config */}
         </span>
       ))}
