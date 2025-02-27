@@ -11,7 +11,7 @@ export default function Home() {
 
   return (
     <ChatProvider>
-      <section className='flex w-screen h-screen border'>
+      <section className='flex w-screen h-screen'>
         {/* <SideBar /> */}
         <Chats />
         <Chat />

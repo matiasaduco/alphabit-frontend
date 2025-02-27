@@ -13,7 +13,7 @@ const Chat = () => {
   const receiverClass = 'bg-blue-800 ml-2'
 
   return (
-    <div className='border grow flex flex-col justify-end items-start'>
+    <div className='grow flex flex-col justify-end items-start'>
       <span className={`${base} ${true ? senderClass : receiverClass}`}>
         Hola!
       </span>
