@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { ChatContext } from '../(context)/context'
 
 const Chats = () => {
   const [chats, setChats] = useState([])
-  const [loading, setLoading] = useState(false)
+  const { setChat } = useContext(ChatContext)
 
   useEffect(() => {
-    setLoading(true)
-    setChats([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
-    setLoading(false)
+    setChats([{ id: 1, name: 'User', lastMessage: 'Last Message' }])
   }, [])
 
   return (
@@ -29,11 +28,18 @@ const Chats = () => {
         </span>
       </div>
       {chats.map((chat) => (
-        <span className='border h-[100px] flex hover:bg-white/10 cursor-pointer'>
-          <img src='#user-picure' className='w-[100px] h-[100%]' />
+        <span
+          key={chat.id}
+          className='border h-[100px] flex hover:bg-white/10 cursor-pointer'
+          onClick={() => setChat(chat)}
+        >
+          <img
+            src='#user-picure'
+            className='w-[100px] h-[100%] rounded-[50%] border mr-3'
+          />
           <span className='self-center'>
-            <h5 className='text-2xl'>User</h5>
-            <p className='text-gray-400'>Last Message</p>
+            <h5 className='text-2xl'>{chat.name}</h5>
+            <p className='text-gray-400'>{chat.lastMessage}</p>
           </span>
           {/* Date */}
           {/* <img src='#mute-icon' className='absolute right-0' /> */}
