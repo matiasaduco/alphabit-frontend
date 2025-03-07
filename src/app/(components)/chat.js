@@ -5,7 +5,10 @@ const Chat = () => {
   const { chat } = useContext(ChatContext)
 
   useEffect(() => {
-    console.log('Chat:', chat)
+    fetch(process.env.API_URL + '/chats')
+      .then((res) => res.json())
+      .then((data) => setChats(data))
+      .catch((err) => console.error(err))
   }, [chat])
 
   const base = 'p-2 rounded-lg max-w-[60%] mb-4'
@@ -16,12 +19,15 @@ const Chat = () => {
     <img src='#BackgroundEmptyChat' className='w-[100%]' />
   ) : (
     <div className='grow flex flex-col justify-end items-start'>
-      <span className={`${base} ${true ? senderClass : receiverClass}`}>
-        Hola!
-      </span>
-      <span className={`${base} ${false ? senderClass : receiverClass}`}>
-        Adios!
-      </span>
+      {chat.map((message, index) => (
+        <span
+          key={index}
+          className={`${base} ${message.sender ? senderClass : receiverClass}`}
+        >
+          {message.text}
+        </span>
+      ))}
+
       <span className='w-full p-3 bg-gray-300 flex'>
         <input
           type='text'

@@ -1,12 +1,15 @@
 import { useContext, useEffect, useState } from 'react'
-import { ChatContext } from '../(context)/context'
+import { ChatContext } from '@/app/(context)/context'
 
 const Chats = () => {
   const [chats, setChats] = useState([])
   const { setChat } = useContext(ChatContext)
 
   useEffect(() => {
-    setChats([{ id: 1, name: 'User', lastMessage: 'Last Message' }])
+    fetch(process.env.API_URL + '/chats')
+      .then((res) => res.json())
+      .then((data) => setChats(data))
+      .catch((err) => console.error(err))
   }, [])
 
   return (
