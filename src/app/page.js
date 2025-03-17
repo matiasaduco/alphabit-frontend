@@ -12,7 +12,7 @@ export default function Home() {
     if (!localStorage.getItem('token')) {
       redirect('/login')
     }
-  })
+  }, [])
 
   return (
     <ChatProvider>

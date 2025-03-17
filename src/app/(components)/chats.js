@@ -1,3 +1,5 @@
+'use client'
+
 import { useContext, useEffect, useState } from 'react'
 import { ChatContext } from '@/app/(context)/context'
 
@@ -6,11 +8,25 @@ const Chats = () => {
   const { setChat } = useContext(ChatContext)
 
   useEffect(() => {
-    fetch(process.env.API_URL + '/chats')
-      .then((res) => res.json())
-      .then((data) => setChats(data))
-      .catch((err) => console.error(err))
-  }, [])
+    const getChats = async () => {
+      const token = localStorage.getItem('token')
+
+      const response = await fetch(`${process.env.API_URL}/chats`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+      })
+
+      if (response.ok) {
+        const json = await response.json()
+        setChats(json.chats ?? [])
+      }
+    }
+
+    getChats()
+  })
 
   return (
     <div className='bg-black/40 w-[400px] flex flex-col relative overflow-y-auto'>
@@ -31,7 +47,7 @@ const Chats = () => {
         </span>
       </div>
 
-      {chats.map((chat) => (
+      {chats?.map((chat) => (
         <span
           key={chat.id}
           className='border-y-[2px] border-white/20 h-[100px] flex items-center hover:bg-white/10 cursor-pointer'

@@ -1,3 +1,5 @@
+'use client'
+
 const { createContext, useState } = require('react')
 
 export const ChatContext = createContext()
