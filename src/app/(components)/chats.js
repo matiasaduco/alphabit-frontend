@@ -2,10 +2,17 @@
 
 import { useContext, useEffect, useState } from 'react'
 import { ChatContext } from '@/app/(context)/context'
+import { IconButton, Menu, MenuItem } from '@mui/material'
+import { MoreVert } from '@mui/icons-material'
+import { redirect } from 'next/navigation'
 
 const Chats = () => {
+  const [search, setSearch] = useState('')
   const [chats, setChats] = useState([])
+  const [filteredChats, setFilteredChats] = useState([])
   const { setChat } = useContext(ChatContext)
+  const [anchorEl, setAnchorEl] = useState(null)
+  const open = Boolean(anchorEl)
 
   useEffect(() => {
     const getChats = async () => {
@@ -28,16 +35,53 @@ const Chats = () => {
     getChats()
   })
 
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget)
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null)
+  }
+
+  const logout = () => {
+    localStorage.clear('token')
+    redirect('/login')
+  }
+
+  const filterChats = (evt) => {
+    setSearch(evt.target.value)
+    const filtered = chats.filter((chat) =>
+      chat.name.includes(evt.target.value)
+    )
+    setFilteredChats(filtered)
+  }
+
   return (
     <div className='bg-black/40 w-[400px] flex flex-col relative overflow-y-auto'>
       <div className='flex flex-col gap-2 sticky top-0 p-4'>
-        <span className='flex mb-4'>
+        <span className='flex mb-4 justify-between'>
           <h3 className='text-3xl'>Chats</h3>
           {/* <img src='#New Chat' className='ml-auto' /> */}
-          {/* <img src='#Options' /> */}
+          <IconButton
+            color='primary'
+            onClick={handleClick}
+            style={{ color: 'white' }}
+          >
+            <MoreVert />
+          </IconButton>
+          <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+            <MenuItem onClick={logout}>Cerrar Sesión</MenuItem>
+          </Menu>
         </span>
 
-        <input type='text' placeholder='Search' />
+        <input
+          id='username'
+          placeholder='Buscar'
+          className='bg-white rounded text-black py-1 px-3'
+          value={search}
+          onChange={filterChats}
+          required
+        />
 
         <span className='flex mb-1'>
           {/* <img src='#Todos' /> */}
@@ -47,7 +91,7 @@ const Chats = () => {
         </span>
       </div>
 
-      {chats?.map((chat) => (
+      {filteredChats?.map((chat) => (
         <span
           key={chat.id}
           className='border-y-[2px] border-white/20 h-[100px] flex items-center hover:bg-white/10 cursor-pointer'
