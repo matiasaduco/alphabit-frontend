@@ -8,7 +8,7 @@ const Chat = () => {
   const { chat } = useContext(ChatContext)
 
   useEffect(() => {
-    const getChats = async () => {
+    const getFullChat = async () => {
       const token = localStorage.getItem('token')
 
       const response = await fetch(`${process.env.API_URL}/chats/${chat.id}`, {
@@ -25,18 +25,18 @@ const Chat = () => {
       }
     }
 
-    if (chat) getChats()
+    if (chat?.id) getFullChat()
   }, [chat])
 
   const base = 'p-2 rounded-lg max-w-[60%] mb-4'
   const senderClass = 'bg-blue-600 text-white self-end mr-2'
   const receiverClass = 'bg-blue-800 ml-2'
 
-  return chat ? (
+  return fullChat ? (
     <img src='#BackgroundEmptyChat' className='w-[100%]' />
   ) : (
     <div className='grow flex flex-col justify-end items-start'>
-      {chat.map((message, index) => (
+      {fullChat?.messages.map((message, index) => (
         <span
           key={index}
           className={`${base} ${message.sender ? senderClass : receiverClass}`}

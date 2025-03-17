@@ -5,14 +5,17 @@ import { ChatContext } from '@/app/(context)/context'
 import { IconButton, Menu, MenuItem } from '@mui/material'
 import { MoreVert } from '@mui/icons-material'
 import { redirect } from 'next/navigation'
+import Layout from './layout'
 
 const Chats = () => {
-  const [search, setSearch] = useState('')
   const [chats, setChats] = useState([])
   const [filteredChats, setFilteredChats] = useState([])
   const { setChat } = useContext(ChatContext)
-  const [anchorEl, setAnchorEl] = useState(null)
-  const open = Boolean(anchorEl)
+
+  const [search, setSearch] = useState('')
+
+  const [anchorMenu, setAnchorMenu] = useState(null)
+  const openMenu = Boolean(anchorMenu)
 
   useEffect(() => {
     const getChats = async () => {
@@ -33,14 +36,14 @@ const Chats = () => {
     }
 
     getChats()
-  })
+  }, [])
 
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget)
+    setAnchorMenu(event.currentTarget)
   }
 
   const handleClose = () => {
-    setAnchorEl(null)
+    setAnchorMenu(null)
   }
 
   const logout = () => {
@@ -57,19 +60,15 @@ const Chats = () => {
   }
 
   return (
-    <div className='bg-black/40 w-[400px] flex flex-col relative overflow-y-auto'>
-      <div className='flex flex-col gap-2 sticky top-0 p-4'>
+    <Layout>
+      <header className='flex flex-col gap-2 sticky top-0 p-4'>
         <span className='flex mb-4 justify-between'>
           <h3 className='text-3xl'>Chats</h3>
           {/* <img src='#New Chat' className='ml-auto' /> */}
-          <IconButton
-            color='primary'
-            onClick={handleClick}
-            style={{ color: 'white' }}
-          >
+          <IconButton onClick={handleClick} style={{ color: 'white' }}>
             <MoreVert />
           </IconButton>
-          <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+          <Menu anchorEl={anchorMenu} open={openMenu} onClose={handleClose}>
             <MenuItem onClick={logout}>Cerrar Sesión</MenuItem>
           </Menu>
         </span>
@@ -89,7 +88,7 @@ const Chats = () => {
           {/* <img src='#Favoritos' /> */}
           {/* <img src='#Grupos' /> */}
         </span>
-      </div>
+      </header>
 
       {filteredChats?.map((chat) => (
         <span
@@ -110,7 +109,7 @@ const Chats = () => {
           {/* Config */}
         </span>
       ))}
-    </div>
+    </Layout>
   )
 }
 
