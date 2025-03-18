@@ -3,7 +3,7 @@
 import { redirect } from 'next/navigation.js'
 import Chat from './(components)/chat.js'
 import Chats from './(components)/chats.js'
-import { ChatProvider } from './(context)/context.js'
+import { ChatProvider } from './(context)/chat.context.js'
 import { useLayoutEffect, useState } from 'react'
 import SideBar from './(components)/sidebar.js'
 import Contacts from './(components)/contacts.js'
