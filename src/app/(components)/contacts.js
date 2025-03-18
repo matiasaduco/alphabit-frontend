@@ -3,7 +3,7 @@
 import { useContext, useEffect, useState } from 'react'
 import Layout from './layout.js'
 import { ChatContext } from '@/app/(context)/context.js'
-import { getAllContacts } from '@/service/contacts.service.js'
+import { getUserContacts } from '@/service/users.service.js'
 import { getChatByContactId } from '@/service/chats.service.js'
 
 const Contacts = () => {
@@ -12,7 +12,7 @@ const Contacts = () => {
 
   useEffect(() => {
     const getContacts = async () => {
-      const response = await getAllContacts()
+      const response = await getUserContacts()
 
       if (response.ok) {
         const json = await response.json()

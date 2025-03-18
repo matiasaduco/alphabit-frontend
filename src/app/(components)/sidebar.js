@@ -5,7 +5,7 @@ import { IconButton } from '@mui/material'
 
 const SideBar = ({ value, setValue }) => {
   return (
-    <aside className='w-[60px] flex flex-col items-center bg-[#2f3136]'>
+    <aside className='w-[70px] flex flex-col items-center bg-[#2f3136]'>
       <IconButton
         onClick={() => setValue(0)}
         style={{

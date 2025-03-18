@@ -1,5 +1,6 @@
 'use client'
 
+import { signUp } from '@/service/auth.service'
 import { Button, TextField } from '@mui/material'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -26,11 +27,7 @@ export default function LoginPage() {
       return
     }
 
-    const response = await fetch(`${process.env.API_URL}/auth/signup`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(user),
-    })
+    const response = await signUp(user)
 
     if (response.ok) {
       const json = await response.json()

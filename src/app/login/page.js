@@ -1,5 +1,6 @@
 'use client'
 
+import { signIn } from '@/service/auth.service'
 import { Button, TextField } from '@mui/material'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -19,11 +20,7 @@ export default function LoginPage() {
   }, [])
 
   async function handleSubmit() {
-    const response = await fetch(`${process.env.API_URL}/auth/signin`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(user),
-    })
+    const response = await signIn(user)
 
     if (response.ok) {
       const json = await response.json()

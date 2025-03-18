@@ -2,41 +2,34 @@
 
 import { useContext, useEffect, useState } from 'react'
 import { ChatContext } from '@/app/(context)/context'
+import { getMessagesByChatId } from '@/service/messages.service'
 
 const Chat = () => {
-  const [fullChat, setFullChat] = useState(null)
+  const [messages, setMessages] = useState(null)
   const { chat } = useContext(ChatContext)
 
   useEffect(() => {
-    const getFullChat = async () => {
-      const token = localStorage.getItem('token')
-
-      const response = await fetch(`${process.env.API_URL}/chats/${chat.id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      })
+    const getMessages = async () => {
+      const response = await getMessagesByChatId(chat.id)
 
       if (response.ok) {
         const json = await response.json()
-        setFullChat(json.chat)
+        setMessages(json.chat)
       }
     }
 
-    if (chat?.id) getFullChat()
+    if (chat?.id) getMessages()
   }, [chat])
 
   const base = 'p-2 rounded-lg max-w-[60%] mb-4'
   const senderClass = 'bg-blue-600 text-white self-end mr-2'
   const receiverClass = 'bg-blue-800 ml-2'
 
-  return fullChat ? (
+  return !messages?.length ? (
     <img src='#BackgroundEmptyChat' className='w-[100%]' />
   ) : (
     <div className='grow flex flex-col justify-end items-start'>
-      {fullChat?.messages.map((message, index) => (
+      {messages?.map((message, index) => (
         <span
           key={index}
           className={`${base} ${message.sender ? senderClass : receiverClass}`}
