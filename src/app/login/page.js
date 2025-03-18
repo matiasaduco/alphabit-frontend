@@ -7,11 +7,11 @@ import { useRouter } from 'next/navigation'
 import { useLayoutEffect, useState } from 'react'
 
 export default function LoginPage() {
+  const router = useRouter()
   const [user, setUser] = useState({
     username: null,
     password: null,
   })
-  const router = useRouter()
 
   useLayoutEffect(() => {
     if (localStorage.getItem('token')) {
@@ -25,6 +25,7 @@ export default function LoginPage() {
     if (response.ok) {
       const json = await response.json()
       localStorage.setItem('token', json.token)
+      localStorage.setItem('userId', json.payload.id)
       router.push('/')
     } else {
       if (response.status === 401) {

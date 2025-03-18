@@ -32,6 +32,7 @@ export default function LoginPage() {
     if (response.ok) {
       const json = await response.json()
       localStorage.setItem('token', json.token)
+      localStorage.setItem('credentials', json.user)
       router.push('/')
     } else {
       if (response.status === 401) {
