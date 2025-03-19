@@ -69,7 +69,7 @@ export default function LoginPage() {
         <TextField
           id='confirm_password'
           className='w-full'
-          type='confirm_password'
+          type='password'
           label='Confirmar Contraseña'
           onChange={(evt) =>
             setUser({ ...user, confirm_password: evt.target.value })
