@@ -7,6 +7,7 @@ export const getChatByContactId = (contactId) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
+    mode: 'cors',
   })
 }
 
@@ -19,5 +20,6 @@ export const getAllChats = async () => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
+    mode: 'cors',
   })
 }

@@ -3,6 +3,7 @@ export const signIn = (user) => {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(user),
+    mode: 'cors',
   })
 }
 
@@ -11,5 +12,6 @@ export const signUp = (user) => {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(user),
+    mode: 'cors',
   })
 }

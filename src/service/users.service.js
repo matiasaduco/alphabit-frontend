@@ -7,6 +7,7 @@ export const getUserContacts = () => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
+    mode: 'cors',
   })
 
   return fetch(`${process.env.API_URL}/contacts`, {
@@ -15,5 +16,6 @@ export const getUserContacts = () => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
+    mode: 'cors',
   })
 }

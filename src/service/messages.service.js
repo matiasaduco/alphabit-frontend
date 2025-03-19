@@ -7,6 +7,7 @@ export const getMessagesByChatId = (chatId, page) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
+    mode: 'cors',
   })
 }
 
@@ -20,5 +21,6 @@ export const sendMessage = (chatId, message) => {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
+    mode: 'cors',
   })
 }
