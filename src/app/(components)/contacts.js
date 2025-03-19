@@ -2,11 +2,12 @@
 
 import { useContext, useEffect, useState } from 'react'
 import Layout from './layout.js'
-import { ChatContext } from '@/app/(context)/context.js'
+import { ChatContext } from '@/app/(context)/chat.context.js'
 import { getUserContacts } from '@/service/users.service.js'
 import { getChatByContactId } from '@/service/chats.service.js'
 
 const Contacts = () => {
+  const [search, setSearch] = useState('')
   const [contacts, setContacts] = useState([])
   const { setChat } = useContext(ChatContext)
 
@@ -16,7 +17,7 @@ const Contacts = () => {
 
       if (response.ok) {
         const json = await response.json()
-        setContacts(json.chats ?? [])
+        setContacts(json ?? [])
       }
     }
 
@@ -28,30 +29,31 @@ const Contacts = () => {
 
     if (response.ok) {
       const json = await response.json()
-      setChat(json.chat)
+      setChat(json)
     }
   }
 
   return (
-    <Layout>
-      {contacts?.map((contact) => (
-        <span
-          key={chat.id}
-          className='border-y-[2px] border-white/20 h-[100px] flex items-center hover:bg-white/10 cursor-pointer'
-          onClick={() => handleClick(contact)}
-        >
-          <img
-            src='#user-picure'
-            className='w-[80px] h-[80px] rounded-[50%] border mr-3'
-          />
-          <span>
-            <h5 className='text-2xl'>{chat.name}</h5>
-            <p className='text-gray-400'>{chat.lastMessage}</p>
+    <Layout header='Contactos' setValue={setSearch}>
+      {contacts
+        ?.filter((contact) => contact.username.includes(search))
+        .map((contact) => (
+          <span
+            key={contact.id}
+            className='border-y-[2px] border-white/20 h-[100px] flex items-center hover:bg-white/10 cursor-pointer'
+            onClick={() => handleClick(contact)}
+          >
+            <img
+              src='#user-picure'
+              className='w-[70px] h-[70px] rounded-[50%] border ml-3 mr-4'
+            />
+            <span>
+              <h5 className='text-xl'>{contact.username}</h5>
+            </span>
+            {/* <img src='#Mute' className='absolute right-0' /> */}
+            {/* Config */}
           </span>
-          {/* <img src='#Mute' className='absolute right-0' /> */}
-          {/* Config */}
-        </span>
-      ))}
+        ))}
     </Layout>
   )
 }

@@ -9,3 +9,15 @@ export const getChatByContactId = (contactId) => {
     },
   })
 }
+
+export const getAllChats = async () => {
+  const token = localStorage.getItem('token')
+
+  return await fetch(`${process.env.API_URL}/chats`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+  })
+}
