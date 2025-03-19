@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation.js'
 import Chat from './(components)/chat.js'
 import Chats from './(components)/chats.js'
 import { ChatProvider } from './(context)/chat.context.js'
-import { useLayoutEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import SideBar from './(components)/sidebar.js'
 import Contacts from './(components)/contacts.js'
 
@@ -15,6 +15,15 @@ export default function Home() {
   useLayoutEffect(() => {
     if (!localStorage.getItem('token')) {
       redirect('/login')
+    }
+  }, [])
+
+  useEffect(() => {
+    const eventSource = new EventSource(`${process.env.API_URL}/events/sse`, {
+      withCredentials: true,
+    })
+    eventSource.onmessage = ({ data }) => {
+      console.log('New message', JSON.parse(data))
     }
   }, [])
 
