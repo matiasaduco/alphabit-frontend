@@ -6,10 +6,10 @@ import Layout from './layout'
 import { getAllChats } from '@/service/chats.service'
 
 const Chats = () => {
+  const [userId, setUserId] = useState([])
   const [search, setSearch] = useState('')
   const [chats, setChats] = useState([])
-  const { setChat } = useContext(ChatContext)
-  const userId = Number(localStorage.getItem('userId'))
+  const { chat, setChat } = useContext(ChatContext)
 
   useEffect(() => {
     const getChats = async () => {
@@ -22,17 +22,20 @@ const Chats = () => {
     }
 
     getChats()
+    setUserId(Number(localStorage.getItem('userId')))
   }, [])
 
   return (
     <Layout header='Chats' setValue={setSearch}>
       {chats
         // ?.filter((chat) => chat.name.includes(search))
-        .map((chat) => (
+        .map((ch) => (
           <span
-            key={chat.id}
-            className='border-y-[2px] border-white/20 h-[100px] flex items-center hover:bg-white/10 cursor-pointer'
-            onClick={() => setChat(chat)}
+            key={ch.id}
+            className={`border-y-[2px] border-white/20 h-[100px] flex items-center hover:bg-white/10 cursor-pointer ${
+              ch.id === chat.id ? 'bg-white/15 hover:bg-white/15' : ''
+            }`}
+            onClick={() => setChat(ch)}
           >
             <img
               src='#user-picure'
@@ -40,10 +43,10 @@ const Chats = () => {
             />
             <span>
               <h5 className='text-xl'>
-                {chat.name ||
-                  chat.users.find((user) => user.id !== userId).username}
+                {ch.name ||
+                  ch.users.find((user) => user.id !== userId).username}
               </h5>
-              <p className='text-gray-400'>{chat.lastMessage}</p>
+              <p className='text-gray-400'>{ch.lastMessage}</p>
             </span>
             {/* Date */}
             {/* <img src='#Mute' className='absolute right-0' /> */}

@@ -5,9 +5,10 @@ import { ChatContext } from '@/app/(context)/chat.context'
 import { getMessagesByChatId, sendMessage } from '@/service/messages.service'
 
 const Chat = () => {
+  const [userId, setUserId] = useState([])
+  const [page, setPage] = useState(1)
   const [messages, setMessages] = useState([])
-  const { chat } = useContext(ChatContext)
-  const userId = Number(localStorage.getItem('userId'))
+  const { chat, setChat } = useContext(ChatContext)
   const container = useRef()
 
   const base = 'rounded-lg max-w-[60%] mx-2 my-1 p-2'
@@ -16,7 +17,7 @@ const Chat = () => {
 
   useEffect(() => {
     const getMessages = async () => {
-      const response = await getMessagesByChatId(chat.id)
+      const response = await getMessagesByChatId(chat.id, page)
 
       if (response.ok) {
         const json = await response.json()
@@ -24,15 +25,15 @@ const Chat = () => {
       }
     }
 
-    if (chat?.id) getMessages()
+    if (chat?.id) {
+      getMessages()
+      setUserId(Number(localStorage.getItem('userId')))
+    }
   }, [chat])
 
   useEffect(() => {
-    if (chat?.id) {
-      const scrollHeight = container.current.scrollHeight
-      const height = container.current.clientHeight
-      const maxScrollTop = scrollHeight - height
-      container.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0
+    if (chat.id) {
+      container.current.scrollTop = container.current.scrollHeight
     }
   }, [messages])
 
@@ -41,26 +42,33 @@ const Chat = () => {
       const response = await sendMessage(chat.id, target.value)
       if (response.ok) {
         const json = await response.json()
-        setMessages((prevMessages) => [...prevMessages, json])
+        setMessages((prevMessages) => [json, ...prevMessages])
       }
 
       target.value = ''
     }
   }
 
+  if (chat.id)
+    document.addEventListener('keyup', (event) => {
+      if (event.key === 'Escape') {
+        setChat({})
+      }
+    })
+
   return !chat?.id ? (
     <img src='#BackgroundEmptyChat' className='w-full' />
   ) : (
-    <article ref={container} className='w-full h-full flex flex-col'>
-      <div>
+    <article id='article' className='w-full h-full flex flex-col'>
+      <div className='flex bg-white/10 p-4 gap-2 cursor-pointer'>
         <img src='#profile' />
         <b className='text-white'>
           {chat?.users?.find((user) => user.id !== userId).username}
         </b>
       </div>
 
-      <div className='flex-1 min-h-0 overflow-y-auto'>
-        <div className='flex flex-col relative justify-end items-start'>
+      <div ref={container} className='flex-1 min-h-0 overflow-y-auto'>
+        <div className='flex flex-col-reverse relative justify-end items-start'>
           {messages.length &&
             messages?.map((message, index) => (
               <span

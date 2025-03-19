@@ -1,7 +1,7 @@
-export const getMessagesByChatId = (chatId) => {
+export const getMessagesByChatId = (chatId, page) => {
   const token = localStorage.getItem('token')
 
-  return fetch(`${process.env.API_URL}/messages/${chatId}`, {
+  return fetch(`${process.env.API_URL}/messages/${chatId}?page=${page}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',

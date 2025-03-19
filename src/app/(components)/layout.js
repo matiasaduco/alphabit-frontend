@@ -1,5 +1,8 @@
+'use client'
+
 import { MoreVert } from '@mui/icons-material'
 import { IconButton, Menu, MenuItem } from '@mui/material'
+import { redirect } from 'next/navigation'
 import { useState } from 'react'
 
 const Layout = ({ children, header, setValue }) => {
