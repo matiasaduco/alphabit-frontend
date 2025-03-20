@@ -1,5 +1,3 @@
-'use client'
-
 import { Chat, People } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 

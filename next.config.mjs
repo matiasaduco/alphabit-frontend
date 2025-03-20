@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   env: {
-    API_URL: 'http://localhost:3030/api',
+    API_URL: 'http://192.168.88.63:3030/api',
   },
 }
 

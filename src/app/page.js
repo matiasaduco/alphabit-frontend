@@ -18,14 +18,14 @@ export default function Home() {
     }
   }, [])
 
-  useEffect(() => {
-    const eventSource = new EventSource(`${process.env.API_URL}/events/sse`, {
-      withCredentials: true,
-    })
-    eventSource.onmessage = ({ data }) => {
-      console.log('New message', JSON.parse(data))
-    }
-  }, [])
+  // useEffect(() => {
+  //   const eventSource = new EventSource(`${process.env.API_URL}/events/sse`, {
+  //     withCredentials: true,
+  //   })
+  //   eventSource.onmessage = ({ data }) => {
+  //     console.log('New message', JSON.parse(data))
+  //   }
+  // }, [])
 
   return (
     <ChatProvider>
