@@ -3,6 +3,7 @@
 import { useContext, useEffect, useRef, useState } from 'react'
 import { ChatContext } from '@/app/(context)/chat.context'
 import { getMessagesByChatId, sendMessage } from '@/service/messages.service'
+import { parseTime } from '@/utils/utils'
 
 const Chat = () => {
   const [userId, setUserId] = useState([])
@@ -11,8 +12,8 @@ const Chat = () => {
   const { chat, setChat } = useContext(ChatContext)
   const container = useRef()
 
-  const base = 'rounded-lg max-w-[60%] mx-2 my-1 p-2'
-  const senderClass = 'bg-blue-600 text-white self-end'
+  const base = 'rounded-lg max-w-[60%] mx-2 my-1 flex gap-2'
+  const senderClass = 'bg-blue-600 self-end'
   const receiverClass = 'bg-blue-800'
 
   useEffect(() => {
@@ -73,18 +74,21 @@ const Chat = () => {
       >
         {messages.length &&
           messages?.map((message, index) => (
-            <span
+            <p
               key={index}
               className={`${base} ${
                 message.sender === userId ? senderClass : receiverClass
               }`}
             >
-              {message.text}
-            </span>
+              <span className='py-1 px-2'>{message.text}</span>
+              <span className='text-gray-400 text-[13px] w-[45px] self-end ml-auto'>
+                {parseTime(message.createdAt)}
+              </span>
+            </p>
           ))}
       </div>
 
-      <span className='w-full p-3 bg-gray-300'>
+      <span className='w-full p-2 bg-gray-300'>
         <input
           type='text'
           placeholder='Type a message'
