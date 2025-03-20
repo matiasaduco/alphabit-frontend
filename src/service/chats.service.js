@@ -23,3 +23,16 @@ export const getAllChats = async () => {
     mode: 'cors',
   })
 }
+
+export const deleteChat = (chatId) => {
+  const token = localStorage.getItem('token')
+
+  return fetch(`${process.env.API_URL}/chats/${chatId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    mode: 'cors',
+  })
+}
