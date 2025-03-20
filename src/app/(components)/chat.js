@@ -67,20 +67,21 @@ const Chat = () => {
         </b>
       </div>
 
-      <div ref={container} className='flex-1 min-h-0 overflow-y-auto'>
-        <div className='flex flex-col-reverse relative justify-end items-start'>
-          {messages.length &&
-            messages?.map((message, index) => (
-              <span
-                key={index}
-                className={`${base} ${
-                  message.sender === userId ? senderClass : receiverClass
-                }`}
-              >
-                {message.text}
-              </span>
-            ))}
-        </div>
+      <div
+        ref={container}
+        className='flex flex-col-reverse relative items-start flex-1 min-h-0 overflow-y-auto'
+      >
+        {messages.length &&
+          messages?.map((message, index) => (
+            <span
+              key={index}
+              className={`${base} ${
+                message.sender === userId ? senderClass : receiverClass
+              }`}
+            >
+              {message.text}
+            </span>
+          ))}
       </div>
 
       <span className='w-full p-3 bg-gray-300'>
