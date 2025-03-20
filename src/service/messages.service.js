@@ -24,3 +24,16 @@ export const sendMessage = (chatId, message) => {
     mode: 'cors',
   })
 }
+
+export const deleteMessage = (chatId, messageId) => {
+  const token = localStorage.getItem('token')
+
+  return fetch(`${process.env.API_URL}/messages/${chatId}/${messageId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    mode: 'cors',
+  })
+}
