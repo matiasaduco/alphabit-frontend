@@ -64,10 +64,12 @@ const Chat = () => {
   }
 
   const handleDelete = () => {
-    deleteMessage(chat.id, selectedMessage.id).then(
+    deleteMessage(selectedMessage.id).then(
       setChat({
         ...chat,
-        messages: chat.messages.filter((message) => message.id !== selected),
+        messages: chat.messages.filter(
+          (message) => message.id !== selectedMessage.id
+        ),
       })
     )
     handleClose()

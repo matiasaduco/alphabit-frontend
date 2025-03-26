@@ -25,10 +25,10 @@ export const getAllMessagesByUserId = (userId, page) => {
   })
 }
 
-export const deleteMessage = (chatId, messageId) => {
+export const deleteMessage = (messageId) => {
   const token = localStorage.getItem('token')
 
-  return fetch(`${process.env.API_URL}/messages/${chatId}/${messageId}`, {
+  return fetch(`${process.env.API_URL}/messages/${messageId}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
