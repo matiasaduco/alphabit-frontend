@@ -1,8 +1,9 @@
-export const getMessagesByChatId = (chatId, page) => {
+export const sendMessage = (receiverId, text) => {
   const token = localStorage.getItem('token')
 
-  return fetch(`${process.env.API_URL}/messages/${chatId}?page=${page}`, {
-    method: 'GET',
+  return fetch(`${process.env.API_URL}/messages`, {
+    method: 'POST',
+    body: JSON.stringify({ receiverId, text }),
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
@@ -11,12 +12,11 @@ export const getMessagesByChatId = (chatId, page) => {
   })
 }
 
-export const sendMessage = (chatId, message) => {
+export const getAllMessagesByUserId = (userId, page) => {
   const token = localStorage.getItem('token')
 
-  return fetch(`${process.env.API_URL}/messages/${chatId}`, {
-    method: 'POST',
-    body: JSON.stringify({ text: message }),
+  return fetch(`${process.env.API_URL}/messages?id=${userId}&page=${page}`, {
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
@@ -29,6 +29,32 @@ export const deleteMessage = (chatId, messageId) => {
   const token = localStorage.getItem('token')
 
   return fetch(`${process.env.API_URL}/messages/${chatId}/${messageId}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    mode: 'cors',
+  })
+}
+
+export const getAllChats = async () => {
+  const token = localStorage.getItem('token')
+
+  return await fetch(`${process.env.API_URL}/messages/chats?page=1`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    mode: 'cors',
+  })
+}
+
+export const deleteChat = (userId) => {
+  const token = localStorage.getItem('token')
+
+  return fetch(`${process.env.API_URL}/chats?id=${userId}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',

@@ -4,7 +4,7 @@ import { useContext, useEffect, useState } from 'react'
 import Layout from './layout.js'
 import { ChatContext } from '@/app/(context)/chat.context.js'
 import { getUserContacts } from '@/service/users.service.js'
-import { getChatByContactId } from '@/service/chats.service.js'
+import { getAllMessagesByUserId } from '@/service/messages.service.js'
 
 const Contacts = () => {
   const [search, setSearch] = useState('')
@@ -17,7 +17,7 @@ const Contacts = () => {
 
       if (response.ok) {
         const json = await response.json()
-        setContacts(json ?? [])
+        setContacts(json ?? null)
       }
     }
 
@@ -25,11 +25,11 @@ const Contacts = () => {
   }, [])
 
   const handleClick = async (contact) => {
-    const response = await getChatByContactId(contact.id)
+    const response = await getAllMessagesByUserId(contact.id, 1)
 
     if (response.ok) {
       const json = await response.json()
-      setChat(json)
+      setChat({ user: contact, messages: json })
     }
   }
 
