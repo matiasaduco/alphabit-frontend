@@ -3,19 +3,16 @@
 import { useContext, useEffect, useState } from 'react'
 import { ChatContext } from '@/app/(context)/chat.context'
 import Layout from './layout'
-import {
-  deleteChat,
-  getAllChats,
-  getAllMessagesByUserId,
-} from '@/service/messages.service'
+import { getAllMessagesByUserId } from '@/service/messages.service'
 import { parseTime } from '@/utils/utils'
 import { KeyboardArrowDown } from '@mui/icons-material'
 import { Menu, MenuItem } from '@mui/material'
+import { deleteChat, getAllChats } from '@/service/chats.service'
 
 const Chats = () => {
   const [userId, setUserId] = useState([])
-  // const [contextMenu, setContextMenu] = useState(null)
-  // const [selectedChat, setSelectedChat] = useState(null)
+  const [contextMenu, setContextMenu] = useState(null)
+  const [selectedChat, setSelectedChat] = useState(null)
   const [search, setSearch] = useState('')
   const [chats, setChats] = useState([])
   const { chat, setChat } = useContext(ChatContext)
@@ -45,29 +42,34 @@ const Chats = () => {
     }
   }
 
-  // const handleContextMenu = (event, selectedChat) => {
-  //   event.preventDefault()
-  //   setSelectedChat(selectedChat)
-  //   setContextMenu(
-  //     contextMenu === null
-  //       ? {
-  //           mouseX: event.clientX + 2,
-  //           mouseY: event.clientY - 6,
-  //         }
-  //       : null
-  //   )
-  // }
+  const handleContextMenu = (event, selectedChat) => {
+    event.preventDefault()
+    setSelectedChat(selectedChat)
+    setContextMenu(
+      contextMenu === null
+        ? {
+            mouseX: event.clientX + 2,
+            mouseY: event.clientY - 6,
+          }
+        : null
+    )
+  }
 
-  // const handleClose = () => {
-  //   setContextMenu(null)
-  // }
+  const handleClose = () => {
+    setContextMenu(null)
+  }
 
-  // const handleDelete = () => {
-  //   deleteChat(selectedChat.id).then(
-  //     setChats((chats) => chats.filter((ch) => ch.id !== selectedChat.id))
-  //   )
-  //   handleClose()
-  // }
+  const handleDelete = () => {
+    const user =
+      userId === selectedChat.sender.id
+        ? selectedChat.receiver
+        : selectedChat.sender
+
+    deleteChat(user.id).then(
+      setChats((chats) => chats.filter((ch) => ch.id !== selectedChat.id))
+    )
+    handleClose()
+  }
 
   return (
     <Layout header='Chats' setValue={setSearch}>
@@ -82,7 +84,7 @@ const Chats = () => {
                   : ''
               }`}
               onClick={() => handleClick(message)}
-              // onContextMenu={(evt) => handleContextMenu(evt, message)}
+              onContextMenu={(evt) => handleContextMenu(evt, message)}
             >
               <img
                 src='#user-picure'
@@ -104,15 +106,15 @@ const Chats = () => {
               {/* <img src='#Mute' className='absolute right-0' /> */}
             </span>
 
-            {/* <KeyboardArrowDown
-              key={`arrow-${ch.id}`}
+            <KeyboardArrowDown
+              key={`arrow-${message.id}`}
               className='absolute bottom-2 right-2 scale-0 cursor-pointer group-hover:scale-100 group-hover:transition group-hover:duration-200'
-              onClick={(evt) => handleContextMenu(evt, ch)}
-            /> */}
+              onClick={(evt) => handleContextMenu(evt, message)}
+            />
           </span>
         ))}
 
-      {/* <Menu
+      <Menu
         open={contextMenu !== null}
         onClose={handleClose}
         anchorReference='anchorPosition'
@@ -122,10 +124,10 @@ const Chats = () => {
             : undefined
         }
       >
-        <MenuItem onClick={handleClose}>Responder</MenuItem>
-        <MenuItem onClick={handleClose}>Reenviar</MenuItem>
+        {/* <MenuItem onClick={handleClose}>Responder</MenuItem> */}
+        {/* <MenuItem onClick={handleClose}>Reenviar</MenuItem> */}
         <MenuItem onClick={handleDelete}>Eliminar</MenuItem>
-      </Menu> */}
+      </Menu>
     </Layout>
   )
 }

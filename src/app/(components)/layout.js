@@ -1,28 +1,6 @@
 'use client'
 
-import { MoreVert } from '@mui/icons-material'
-import { IconButton, Menu, MenuItem } from '@mui/material'
-import { redirect } from 'next/navigation'
-import { useState } from 'react'
-
 const Layout = ({ children, header, setValue }) => {
-  const [anchorMenu, setAnchorMenu] = useState(null)
-  const openMenu = Boolean(anchorMenu)
-
-  const handleClick = ({ currentTarget }) => {
-    setAnchorMenu(currentTarget)
-  }
-
-  const handleClose = () => {
-    setAnchorMenu(null)
-  }
-
-  const logout = () => {
-    localStorage.clear('token')
-    localStorage.clear('userId')
-    redirect('/login')
-  }
-
   const filter = ({ target }) => {
     setValue(target.value)
   }
@@ -33,12 +11,6 @@ const Layout = ({ children, header, setValue }) => {
         <span className='flex mb-4 justify-between'>
           <h3 className='text-3xl'>{header}</h3>
           {/* <img src='#New Chat' className='ml-auto' /> */}
-          <IconButton onClick={handleClick} style={{ color: 'white' }}>
-            <MoreVert />
-          </IconButton>
-          <Menu anchorEl={anchorMenu} open={openMenu} onClose={handleClose}>
-            <MenuItem onClick={logout}>Cerrar Sesión</MenuItem>
-          </Menu>
         </span>
 
         <input

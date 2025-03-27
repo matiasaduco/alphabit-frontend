@@ -1,14 +1,19 @@
-import { Chat, People } from '@mui/icons-material'
+import { Chat, Logout, People } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
 
 const SideBar = ({ value, setValue }) => {
+  const logout = () => {
+    localStorage.clear('token')
+    localStorage.clear('userId')
+    redirect('/login')
+  }
+
   return (
-    <aside className='w-[80px] flex flex-col items-center bg-[#2f3136]'>
+    <aside className='w-[90px] py-4 flex flex-col items-center bg-[#2f3136]'>
       <IconButton
         onClick={() => setValue(0)}
         style={{
           color: 'white',
-          marginTop: '17px',
           backgroundColor: value === 0 ? 'gray' : 'transparent',
         }}
       >
@@ -22,6 +27,12 @@ const SideBar = ({ value, setValue }) => {
         }}
       >
         <People />
+      </IconButton>
+      <IconButton
+        onClick={logout}
+        style={{ color: 'white', marginTop: 'auto' }}
+      >
+        <Logout />
       </IconButton>
     </aside>
   )
