@@ -2,11 +2,11 @@
 
 import { redirect } from 'next/navigation.js'
 import Chat from './(components)/chat.js'
-import Chats from './(components)/chats.js'
+import Chats from './(components)/(sidebar)/chats.js'
 import { ChatProvider } from './(context)/chat.context.js'
-import { useEffect, useLayoutEffect, useState } from 'react'
-import SideBar from './(components)/sidebar.js'
-import Contacts from './(components)/contacts.js'
+import { useLayoutEffect, useState } from 'react'
+import SideBar from './(components)/(sidebar)/sidebar.js'
+import Contacts from './(components)/(sidebar)/contacts.js'
 
 export default function Home() {
   const [value, setValue] = useState(0)
@@ -17,15 +17,6 @@ export default function Home() {
       redirect('/login')
     }
   }, [])
-
-  // useEffect(() => {
-  //   const eventSource = new EventSource(`${process.env.API_URL}/events/sse`, {
-  //     withCredentials: true,
-  //   })
-  //   eventSource.onmessage = ({ data }) => {
-  //     console.log('New message', JSON.parse(data))
-  //   }
-  // }, [])
 
   return (
     <ChatProvider>
