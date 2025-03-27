@@ -1,9 +1,9 @@
-export const sendMessage = (receiverId, text) => {
+export const sendMessage = (text, receiverId, responseToId) => {
   const token = localStorage.getItem('token')
 
   return fetch(`${process.env.API_URL}/messages`, {
     method: 'POST',
-    body: JSON.stringify({ receiverId, text }),
+    body: JSON.stringify({ text, receiverId, responseToId }),
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,

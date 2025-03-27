@@ -4,18 +4,19 @@ import { useContext, useEffect, useRef, useState } from 'react'
 import { ChatContext } from '@/app/(context)/chat.context'
 import { deleteMessage, sendMessage } from '@/service/messages.service'
 import { parseTime } from '@/utils/utils'
-import { Menu, MenuItem } from '@mui/material'
-import { KeyboardArrowDown } from '@mui/icons-material'
+import { IconButton, Menu, MenuItem } from '@mui/material'
+import { Close, KeyboardArrowDown, Reply } from '@mui/icons-material'
 
 const Chat = () => {
   const [userId, setUserId] = useState([])
   const [selectedMessage, setSelectedMessage] = useState(null)
   const [contextMenu, setContextMenu] = useState(null)
-  const [page, setPage] = useState(1)
+  // const [page, setPage] = useState(1)
   const { chat, setChat } = useContext(ChatContext)
   const container = useRef()
 
-  const base = 'rounded-lg max-w-[60%] mx-2 my-1 flex gap-2 relative group'
+  const base =
+    'flex flex-col rounded-lg min-w-[100px] max-w-[60%] mx-2 my-1 p-2 relative group'
 
   useEffect(() => {
     if (chat) {
@@ -26,7 +27,14 @@ const Chat = () => {
 
   const handleSendMessage = async ({ key, target }) => {
     if (key === 'Enter') {
-      const response = await sendMessage(chat.user.id, target.value)
+      const response = await sendMessage(
+        target.value,
+        chat.user.id,
+        selectedMessage?.isAnswered ? selectedMessage.id : null
+      )
+
+      setSelectedMessage({ ...selectedMessage, isAnswered: false })
+
       if (response.ok) {
         const json = await response.json()
         setChat({
@@ -59,7 +67,8 @@ const Chat = () => {
     )
   }
 
-  const handleClose = () => {
+  const handleResponse = () => {
+    setSelectedMessage({ ...selectedMessage, isAnswered: true })
     setContextMenu(null)
   }
 
@@ -72,7 +81,7 @@ const Chat = () => {
         ),
       })
     )
-    handleClose()
+    setContextMenu(null)
   }
 
   return !chat ? (
@@ -98,8 +107,16 @@ const Chat = () => {
             }`}
             onContextMenu={(evt) => handleContextMenu(evt, message)}
           >
-            <span className='py-1 px-2'>{message.text}</span>
-            <span className='text-gray-400 text-[13px] w-[45px] self-end ml-auto'>
+            {message.responseTo && (
+              <span className='flex flex-col rounded-md bg-black/20 text-gray-400 border-l-4 border-l-blue-400 p-1 mb-2'>
+                <b className='text-sm text-blue-400 truncate'>
+                  {message.responseTo.sender.username}
+                </b>
+                <span className='truncate'>{message.responseTo.text}</span>
+              </span>
+            )}
+            <span className='leading-none'>{message.text}</span>
+            <span className='text-gray-400 text-[13px] self-end leading-none'>
               {parseTime(message.createdAt)}
             </span>
             <KeyboardArrowDown
@@ -111,7 +128,7 @@ const Chat = () => {
 
         <Menu
           open={contextMenu !== null}
-          onClose={handleClose}
+          onClose={() => setContextMenu(null)}
           anchorReference='anchorPosition'
           anchorPosition={
             contextMenu !== null
@@ -119,17 +136,46 @@ const Chat = () => {
               : undefined
           }
         >
-          {/* <MenuItem onClick={handleClose}>Responder</MenuItem> */}
+          <MenuItem onClick={handleResponse}>Reply</MenuItem>
           {/* <MenuItem onClick={handleClose}>Reenviar</MenuItem> */}
-          <MenuItem onClick={handleDelete}>Eliminar</MenuItem>
+          <MenuItem onClick={handleDelete}>Delete</MenuItem>
         </Menu>
       </div>
 
       <span className='w-full p-4 bg-transparent'>
+        {selectedMessage?.isAnswered && (
+          <div className='flex justify-between gap-2 p-2 bg-white/10 rounded-t-lg'>
+            <IconButton
+              onClick={() =>
+                setSelectedMessage({ ...selectedMessage, isAnswered: false })
+              }
+              style={{ color: 'white' }}
+            >
+              <Reply />
+            </IconButton>
+            <div className='w-[330px] rounded-md bg-blue-400/10 text-gray-400 border-l-4 border-l-blue-400 pl-2 flex flex-col'>
+              <b className='text-sm text-blue-400 truncate'>
+                Reply to: {selectedMessage.sender.username}
+              </b>
+              <p className='truncate'>{selectedMessage.text}</p>
+            </div>
+            <IconButton
+              onClick={() =>
+                setSelectedMessage({ ...selectedMessage, isAnswered: false })
+              }
+              style={{ color: 'white' }}
+            >
+              <Close />
+            </IconButton>
+          </div>
+        )}
+
         <input
           type='text'
           placeholder='Type a message'
-          className='w-full p-2 rounded-lg text-black'
+          className={`w-full p-2 bg-white/10 ${
+            selectedMessage?.isAnswered ? 'rounded-b-lg' : 'rounded-lg'
+          }`}
           onKeyUp={handleSendMessage}
         />
       </span>
