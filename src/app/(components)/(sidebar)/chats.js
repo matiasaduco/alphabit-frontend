@@ -90,8 +90,8 @@ const Chats = () => {
                 src='#user-picure'
                 className='w-[70px] h-[70px] rounded-[50%] border ml-3 mr-4'
               />
-              <span className='flex flex-wrap w-full items-center'>
-                <h5 className='text-xl truncate w-[150px]'>
+              <span className='grid grid-cols-2 w-full items-center'>
+                <h5 className='text-xl truncate'>
                   {userId === message.sender.id
                     ? message.receiver.username
                     : message.sender.username}
@@ -99,7 +99,7 @@ const Chats = () => {
                 <span className='text-gray-400 text-[13px] ml-auto mr-3'>
                   {parseTime(message.createdAt)}
                 </span>
-                <span className='text-gray-400 text-sm truncate w-[200px]'>
+                <span className='text-gray-400 text-sm truncate col-span-2'>
                   {message.text}
                 </span>
               </span>

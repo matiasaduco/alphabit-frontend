@@ -1,5 +1,6 @@
 import { Chat, Logout, People } from '@mui/icons-material'
 import { IconButton } from '@mui/material'
+import { redirect } from 'next/navigation'
 
 const SideBar = ({ value, setValue }) => {
   const logout = () => {
@@ -9,7 +10,7 @@ const SideBar = ({ value, setValue }) => {
   }
 
   return (
-    <aside className='w-[90px] py-4 flex flex-col items-center bg-[#2f3136]'>
+    <aside className='min-w-[45px] max-w-[90px] py-4 flex flex-col items-center bg-[#2f3136]'>
       <IconButton
         onClick={() => setValue(0)}
         style={{

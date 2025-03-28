@@ -84,6 +84,13 @@ const Chat = () => {
     setContextMenu(null)
   }
 
+  const scrollToReplied = (id) => {
+    console.log(container.current.querySelector(`[data-key="${id}"]`), id)
+    container.current.querySelector(`[data-key="${id}"]`).scrollIntoView({
+      behavior: 'smooth',
+    })
+  }
+
   return !chat ? (
     <img src='#BackgroundEmptyChat' className='w-full' />
   ) : (
@@ -100,6 +107,7 @@ const Chat = () => {
         {chat.messages?.map((message, index) => (
           <p
             key={index}
+            data-key={message.id}
             className={`${base} ${
               message.sender.id === userId
                 ? 'bg-blue-600 self-end'
@@ -108,11 +116,20 @@ const Chat = () => {
             onContextMenu={(evt) => handleContextMenu(evt, message)}
           >
             {message.responseTo && (
-              <span className='flex flex-col rounded-md bg-black/20 text-gray-400 border-l-4 border-l-blue-400 p-1 mb-2'>
+              <span
+                className='flex flex-col rounded-md bg-black/20 text-gray-400 border-l-4 border-l-blue-400 p-1 mb-2'
+                onClick={() => scrollToReplied(message.responseTo.id)}
+              >
                 <b className='text-sm text-blue-400 truncate'>
-                  {message.responseTo.sender.username}
+                  {message.responseTo.sender?.username ??
+                    chat.messages.find((m) => m.id === message.responseTo.id)
+                      .sender.username}
                 </b>
-                <span className='truncate'>{message.responseTo.text}</span>
+                <span className='truncate'>
+                  {message.responseTo.text ??
+                    chat.messages.find((m) => m.id === message.responseTo.id)
+                      .text}
+                </span>
               </span>
             )}
             <span className='leading-none'>{message.text}</span>
@@ -142,7 +159,7 @@ const Chat = () => {
         </Menu>
       </div>
 
-      <span className='w-full p-4 bg-transparent'>
+      <span className='min-w-[350px] w-[50%] mx-auto p-4 bg-transparent'>
         {selectedMessage?.isAnswered && (
           <div className='flex justify-between gap-2 p-2 bg-white/10 rounded-t-lg'>
             <IconButton
