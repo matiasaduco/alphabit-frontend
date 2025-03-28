@@ -7,6 +7,7 @@ import { ChatProvider } from './(context)/chat.context.js'
 import { useLayoutEffect, useState } from 'react'
 import SideBar from './(components)/(sidebar)/sidebar.js'
 import Contacts from './(components)/(sidebar)/contacts.js'
+import { io } from 'socket.io-client'
 
 export default function Home() {
   const [value, setValue] = useState(0)
@@ -17,6 +18,16 @@ export default function Home() {
       redirect('/login')
     }
   }, [])
+
+  if (localStorage.getItem('token')) {
+    const socket = io(`${process.env.API_URL}/events`, {
+      query: { userId: localStorage.getItem('userId') },
+    })
+
+    socket.on("connect", () => {
+      console.log(`Connected to server with ID: ${socket.id}`);
+    });
+  }
 
   return (
     <ChatProvider>
